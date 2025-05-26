@@ -37,8 +37,8 @@ class ArrayList : public List<E> {
         // Insert "item" at current position.
         void insert(const E& item) override {
             Assert(listSize < maxSize, "List capacity exceeded");
-            for (int i = listSize; i>curr; i--)     // shifing the element up
-                    listArray[i] = listArray[i-1];   // to make room.
+            for (int i = listSize; i>curr; i--)// shifing the element up
+                    listArray[i] = listArray[i-1];// to make room.
             listArray[curr] = item;
             listSize++;
         }
