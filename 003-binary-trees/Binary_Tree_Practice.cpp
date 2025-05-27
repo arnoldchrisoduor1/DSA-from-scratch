@@ -3,23 +3,22 @@
 
 using namespace std;
 
-// Defining the node structure.
 class TreeNode {
     public:
-        int data; // the value to be stored in the node.
-        TreeNode* left; // pointer to left child
-        TreeNode* right; // pointer to the right child.
+        int data;
 
-        // constructor to initialize a node.
+        TreeNode* left;
+        TreeNode* right;
+
+        // Constructor to initialize the Node.
         TreeNode(int value) : data(value), left(nullptr), right(nullptr) {}
 };
 
-// Step 2: Defining the binary tree class.
 class BinaryTree {
     private:
-        TreeNode* root; // this is the pointer to the root node.
+        TreeNode* root; // pointer to the root node.
 
-        // Private helper functions for recursive operations.
+        // private helper functions for recusrive operations.
         TreeNode* insertRecursive(TreeNode* node, int value);
         bool searchRecursive(TreeNode* node, int value);
         void inorderRecursive(TreeNode* node);
@@ -29,7 +28,7 @@ class BinaryTree {
         void deleteTree(TreeNode* node);
 
     public:
-        // constructor
+        // constructor.
         BinaryTree() : root(nullptr) {}
 
         // Desctructor.
@@ -37,7 +36,7 @@ class BinaryTree {
             deleteTree(root);
         }
 
-        // Public interface functions.
+        // public interface functions.
         void insert(int value);
         bool search(int value);
         void inorderTransversal();
@@ -48,16 +47,15 @@ class BinaryTree {
         void display();
 };
 
-// Step 3: Implement insertion (recursive approach).
+// STEP 3: Implementing insertion (recusrion approach).
 TreeNode* BinaryTree::insertRecursive(TreeNode* node, int value) {
-    // Base case: if we reach a null node, create a new node.
+    // Base case: if we reach a null node create a new node.
     if (node == nullptr) {
         return new TreeNode(value);
     }
 
-    // Recursive case: decide whether to go left or right.
-    //  For a binary search tree property, smaller values go left.
-    if (value <=node->data) {
+    // Recursive case: deciding whether to go right or left.
+    if(value <= node->data) {
         node->left = insertRecursive(node->left, value);
     } else {
         node->right = insertRecursive(node->right, value);
@@ -70,20 +68,20 @@ void BinaryTree::insert(int value) {
     root = insertRecursive(root, value);
 }
 
-// Step 4: Implementing search (recursive approach)
-bool BinaryTree::searchRecursive(TreeNode* node, int value) {
-    // Base case: node is null (value not found)
+// STEP 4: Implementing the search (recursive approach)
+bool searchRecursive(TreeNode* node, int value) {
+    // Base case: if node is null.
     if (node == nullptr) {
         return false;
     }
 
-    // Base case: value found.
+    // Search for value in current node.
     if (node->data == value) {
         return true;
     }
 
-    // Recusrive case: search in appropriate subtree.
-    if (value < node->data) {
+    // Checking for the value in the subsequent nodes.
+    if (node->data > value) {
         return searchRecursive(node->left, value);
     } else {
         return searchRecursive(node->right, value);
@@ -94,13 +92,12 @@ bool BinaryTree::search(int value) {
     return searchRecursive(root, value);
 }
 
-// Step 5: implementing tree transversal.
-// Inorder transversal: Left -> Root -> Right.
+// STEP 5: creating the inorder transversal logic LEFT->ROOT ->RIGHT
 void BinaryTree::inorderRecursive(TreeNode* node) {
-    if (node != nullptr) {
-        inorderRecursive(node->left); // visit left subtree.
-        cout << node->data << " "; // visit root.
-        inorderRecursive(node->right); // visit right subtree.
+    if( node != nullptr) {
+        inorderRecursive(node->left);
+        cout << node->data << " ";
+        inorderRecursive(node->right);
     }
 }
 
@@ -110,37 +107,41 @@ void BinaryTree::inorderTransversal() {
     cout << endl;
 }
 
-// Preorder transversal: Root -> Left -> Right.
+// STEP 6: Preorder logic ROOT -> LEFT -> RIGHT.
 void BinaryTree::preorderRecursive(TreeNode* node) {
     if (node != nullptr) {
-        cout << node->data << " "; // visit the root.
-        preorderRecursive(node->left); // visit left subtree.
-        preorderRecursive(node->right); // visit right subtree.
+        // visiting the root node.
+        cout << node->data << " ";
+        // visiting the left node.
+        preorderRecursive(node->left);
+        // Visiting the right node.
+        preorderRecursive(node->right);
     }
 }
 
 void BinaryTree::preorderTransversal() {
-    cout << "Preorder: ";
+    cout << "Pre Order: ";
     preorderRecursive(root);
     cout << endl;
 }
 
-// Postorder transversal: Left -> Right -> Root
+// STEP 7: Post Order logic
+// LEFT->RIGHT->ROOT.
 void BinaryTree::postorderRecursive(TreeNode* node) {
     if (node != nullptr) {
-        postorderRecursive(node->left); // visit left subtree.
-        postorderRecursive(node->right); // visit right subtree.
-        cout << node->data << " "; /// visit the root.
+        postorderRecursive(node->left);
+        postorderRecursive(node->right);
+        cout << node->data << " ";
     }
 }
 
 void BinaryTree::postorderTransversal() {
-    cout << "Postorder: ";
+    cout << "post order: ";
     postorderRecursive(root);
     cout << endl;
 }
 
-// Step 6: Level-order transversal (breadth-first)
+// STEP 8: Level Order transversal. (breadth-first).
 void BinaryTree::levelOrderTransversal() {
     if (root == nullptr) return;
 
@@ -148,12 +149,12 @@ void BinaryTree::levelOrderTransversal() {
     q.push(root);
 
     cout << "Level-order: ";
-    while (!q.empty()) {
+    while(!q.empty()) {
         TreeNode* current = q.front();
         q.pop();
 
         cout << current->data << " ";
-    
+
         // Add children to queue
         if (current->left != nullptr) {
             q.push(current->left);
@@ -165,10 +166,10 @@ void BinaryTree::levelOrderTransversal() {
     cout << endl;
 }
 
-// Step 7: Calculating the height of the tree.
+// STEP 10: Calculating the height of the tree
 int BinaryTree::heightRecursive(TreeNode* node) {
     if (node == nullptr) {
-        return -1; // height of the tree is -1.
+        return -1;
     }
 
     int leftHeight = heightRecursive(node->left);
@@ -177,11 +178,7 @@ int BinaryTree::heightRecursive(TreeNode* node) {
     return 1 + max(leftHeight, rightHeight);
 }
 
-int BinaryTree::height() {
-    return heightRecursive(root);
-}
-
-// Step 8: Clean up the memory.
+// STEP 11: Cleaning up the memory.
 void BinaryTree::deleteTree(TreeNode* node) {
     if (root != nullptr) {
         deleteTree(node->left);
@@ -190,40 +187,14 @@ void BinaryTree::deleteTree(TreeNode* node) {
     }
 }
 
-// Step 9: Display function for visualization.
-void BinaryTree:: display() {
+// STEP 12: Display function for visualization.
+void BinaryTree::display() {
     if (root == nullptr) {
         cout << "Tree is empty!" << endl;
         return;
     }
 
     cout << "\n=== Binary Tree Contents ========" << endl;
+
     inorderTransversal();
-}
-
-int main() {
-    BinaryTree tree;
-
-    cout << "Building a Binary Tree from scartch!\n" << endl;
-
-    // Insert some values
-    cout << "Inserting values: 50, 30, 70, 20, 40, 60, 80" << endl;
-    tree.insert(50);
-    tree.insert(30);
-    tree.insert(70);
-    tree.insert(20);
-    tree.insert(40);
-    tree.insert(60);
-    tree.insert(80);
-
-     // Display the tree
-    tree.display();
-    
-    // Test search functionality
-    cout << "\nSearching for values:" << endl;
-    cout << "Search 40: " << (tree.search(40) ? "Found" : "Not Found") << endl;
-    cout << "Search 25: " << (tree.search(25) ? "Found" : "Not Found") << endl;
-    cout << "Search 80: " << (tree.search(80) ? "Found" : "Not Found") << endl;
-    
-    return 0;
 }
