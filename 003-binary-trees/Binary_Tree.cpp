@@ -54,7 +54,6 @@ TreeNode* BinaryTree::insertRecursive(TreeNode* node, int value) {
     if (node == nullptr) {
         return new TreeNode(value);
     }
-
     // Recursive case: decide whether to go left or right.
     //  For a binary search tree property, smaller values go left.
     if (value <=node->data) {
@@ -76,13 +75,11 @@ bool BinaryTree::searchRecursive(TreeNode* node, int value) {
     if (node == nullptr) {
         return false;
     }
-
     // Base case: value found.
     if (node->data == value) {
         return true;
     }
-
-    // Recusrive case: search in appropriate subtree.
+    // Recursive case: search in appropriate subtree.
     if (value < node->data) {
         return searchRecursive(node->left, value);
     } else {
