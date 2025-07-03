@@ -45,5 +45,58 @@ class HashTable {
 
             // getting a reference to the list at that index.
             std::list<Entry>& bucket = table[index];
+
+            // we will now check if the key already exists in this bucket (update value if it does.)
+            for (Entry& entry : bucket) {
+                if (entry.key == key) {
+                    entry.value = value;
+                    std::cout << "Updated key " << key << " with new value: " << value << std::endl;
+                    return;
+                }
+            }
+
+            // if key not found we will add a new entry to the end of the list in the bucket.
+            bucket.emplace_back(key, value); //emplace will construct Entry in-place.
+            size++;
+            std::cout << "Inserted key: " << key << ", value: " << value << std::endl;
+        }
+
+        // Building the SEARCH functionality
+        std::string get(int key) const {
+            // calculating the bucket index.
+            int index = hashFunction(key);
+
+            // we will get the constant reference to the list at that index.
+            const std::list<Entry>& bucket = table[index];
+
+            // iterate through the list in the bucket to find the key.
+            for (const Entry& entry : bucket) {
+                if (entry.key == key) {
+                    return entry.value; // key found, return its value.
+                }
+            }
+
+            // incase key was not found.
+            return "Key Not Found";
+        }
+
+        // Building the DELETE functionality.
+        void remove(int key) {
+            // calculating the bucket index.
+            int index = hashFunction(key);
+
+            // getting the reference to the list at that index.
+            std::list<Entry>& bucket = table[index];
+
+            // we will iterate through the list to find and remove the key.
+            // we will use the iterator because we might modify the list while iterating.
+            for (auto it = bucket.begin(); it != bucket.end(); ++it) {
+                if (it->key == key) {
+                    bucket.erase(it);
+                    size--;
+                    std::cout << "Removed key: " << key << std::endl;
+                    return;
+                }
+            }
         }
 };
