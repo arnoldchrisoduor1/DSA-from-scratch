@@ -109,6 +109,68 @@ class HashTable {
                 const std::list<Entry>& bucket = table[i];
                 std::cout << "Bucket " << i << ": ";
                 // print the contents if not empty.
+                if (!bucket.empty()) {
+                    for (const Entry& entry : bucket) {
+                        std::cout << "(" << entry.key << ", " << entry.value << ") ";
+                    }
+                } else {
+                    std::cout << "Empty";
+                }
+                std::cout << "Total elements: " << size << std::endl;
+                std::cout << "===========================\n" << std::endl;
             }
         }
+
+        // Get current number of elements.
+        int getSize() const {
+            return size;
+        }
+
+        // Get current capacity  (number of buckets).
+        int getCapacity() const {
+            return capacity;
+        }
 };
+
+int main() {
+    std::cout << "Building a Hash Table from scratch!\n" << std::endl;
+
+    // Create a hash table with an initial capacity of 10
+    HashTable myHashTable(10);
+
+    // Insert some key-value pairs
+    std::cout << "--- Inserting values ---" << std::endl;
+    myHashTable.insert(10, "Apple");
+    myHashTable.insert(20, "Banana");
+    myHashTable.insert(5, "Cherry");
+    myHashTable.insert(15, "Date"); // This will collide with 5 (15 % 10 = 5)
+    myHashTable.insert(25, "Elderberry"); // This will collide with 5 and 15 (25 % 10 = 5)
+    myHashTable.insert(30, "Fig");
+    myHashTable.insert(1, "Grape");
+    myHashTable.insert(11, "Honeydew"); // This will collide with 1 (11 % 10 = 1)
+    myHashTable.insert(10, "Apricot"); // Update existing key 10
+
+    myHashTable.display(); // Display current state
+
+    // Test search functionality
+    std::cout << "--- Searching for values ---" << std::endl;
+    std::cout << "Value for key 20: " << myHashTable.get(20) << std::endl;
+    std::cout << "Value for key 15: " << myHashTable.get(15) << std::endl;
+    std::cout << "Value for key 25: " << myHashTable.get(25) << std::endl;
+    std::cout << "Value for key 99: " << myHashTable.get(99) << std::endl; // Not found
+    std::cout << "Value for key 10: " << myHashTable.get(10) << std::endl; // Updated value
+
+    // Test removal functionality
+    std::cout << "--- Removing values ---" << std::endl;
+    myHashTable.remove(15); // Remove an existing key
+    myHashTable.remove(100); // Try to remove a non-existent key
+    myHashTable.remove(1);  // Remove a key that caused a collision
+
+    myHashTable.display(); // Display state after removals
+
+    std::cout << "Value for key 15 after removal: " << myHashTable.get(15) << std::endl;
+    std::cout << "Value for key 1 after removal: " << myHashTable.get(1) << std::endl;
+    std::cout << "Value for key 11 after removal: " << myHashTable.get(11) << std::endl; // Should still be there
+
+    return 0;
+}
