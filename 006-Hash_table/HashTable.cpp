@@ -99,4 +99,16 @@ class HashTable {
                 }
             }
         }
+
+        // Buidling the DISPLAY functionality.
+        void display() const {
+            std::cout << "\n=== Hash Table Contents ===" << std::endl;
+            // we will iterate through all the contents in the list.
+            for (int i = 0; i < capacity; ++i) {
+                // getting the constant reference to the list (bucket) at the current index.
+                const std::list<Entry>& bucket = table[i];
+                std::cout << "Bucket " << i << ": ";
+                // print the contents if not empty.
+            }
+        }
 };
